@@ -1,12 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Slick appointment editor</title>
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
-        <script type="text/javascript" src="knockout-3.2.0.js"></script>
-    </head>
-    <body>
-        
-    </body>
+<head>
+    <meta charset="utf-8">
+    <title>Slick appointment editor</title>
+    <link href="bootstrap-3.3.2.min.css" rel="stylesheet">
+    <script type="text/javascript" src="knockout-3.2.0.js"></script>
+    
+    <style type="text/css">
+      table {margin-top: 10px}
+      table.table tr td {border-top: 0px;}
+    </style>
+</head>
+<body>
+
+<form class="">
+
+<div class="jumbotron">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-11">
+        <p>Maak een afspraak</p>
+      </div>
+      <div class="col-md-1">
+        <input type="submit" class="btn btn-danger" value="Bewaren">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="row">
+
+  <div class="form-group col-md-4 ">
+    <label for="plandatum">Datum</label>
+    <input type="text" class="form-control" id="plandatum">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="beginuur">Begint om</label>
+    <input type="text" class="form-control" id="beginuur">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="einduur">Eindigt om</label>
+    <input type="text" class="form-control" id="einduur">
+  </div>
+  
+</div>
+
+<div class="row">
+
+  <div class="form-group col-md-12">
+    <label for="appLabel">Label</label>
+    <input type="text" class="form-control" id="appLabel">
+  </div>
+
+</div>
+
+
+
+<h3>Therapeuten</h3>
+<div class="row">
+  <div class="col-md-1">
+    <button class="btn btn-danger">Voeg toe</button>
+  </div>
+  <div class="col-md-3">
+    <select class="form-control">
+      <option value="1">Mireille</option>
+      <option value="2">Gustaaf</option>
+      <option value="3">Hortensia</option>
+    </select>
+  </div>
+  <div class="col-md-3">
+    <select class="form-control">
+      <option value="11">A - afwezig</option>
+      <option value="12">K - koffieklets</option>
+      <option value="13">W - werken</option>
+    </select>
+  </div>
+</diV>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>Jan</th>
+      <th>Piet</th>
+      <th>Joris</th>
+    </tr>
+  </thead>
+  
+  <tbody>
+    <tr>
+      <td>D</td>
+      <td>1234 | Eufrasie</td>
+      <td>
+        <select class="form-control">
+          <option value="11">A - afwezig</option>
+          <option value="12">K - koffieklets</option>
+          <option value="13">W - werken</option>
+        </select>
+      </td>
+      <td>
+        <select class="form-control">
+          <option value="11">A - afwezig</option>
+          <option value="12">K - koffieklets</option>
+          <option value="13">W - werken</option>
+        </select>
+      </td>
+      <td>
+        <select class="form-control">
+          <option value="11">A - afwezig</option>
+          <option value="12">K - koffieklets</option>
+          <option value="13">W - werken</option>
+        </select>
+      </td>
+      <td>
+        <select class="form-control">
+          <option value="11">A - afwezig</option>
+          <option value="12">K - koffieklets</option>
+          <option value="13">W - werken</option>
+        </select>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>D</td>
+      <td>5678 | Gérard</td>
+      <td>
+        <select class="form-control">
+          <option value="11">A - afwezig</option>
+          <option value="12">K - koffieklets</option>
+          <option value="13">W - werken</option>
+        </select>
+      </td>
+      <td>
+        <select class="form-control">
+          <option value="11">A - afwezig</option>
+          <option value="12">K - koffieklets</option>
+          <option value="13">W - werken</option>
+        </select>
+      </td>
+      <td>
+        <select class="form-control">
+          <option value="11">A - afwezig</option>
+          <option value="12">K - koffieklets</option>
+          <option value="13">W - werken</option>
+        </select>
+      </td>
+      <td>
+        <select class="form-control">
+          <option value="11">A - afwezig</option>
+          <option value="12">K - koffieklets</option>
+          <option value="13">W - werken</option>
+        </select>
+      </td>
+    </tr>
+  </tbody>
+
+</table>
+
+<h3>Revalidanten</h3>
+<div class="row">
+  <div class="col-md-1">
+    <button class="btn btn-danger">Voeg toe</button>
+  </div>
+  <div class="col-md-3">
+    <select class="form-control">
+      <option value="1">Adil</option>
+      <option value="2">Wannes</option>
+      <option value="3">Jana</option>
+    </select>
+  </div>
+</diV>
+
+<div class="row">
+  <div class="col-md-5">
+  <table class="table">
+    <tbody>
+      <tr>
+        <td>D</td>
+        <td>234 | Jan</td>
+      </tr>
+      
+      <tr>
+        <td>D</td>
+        <td>987 | Piet</td>
+      </tr>
+      
+      <tr>
+        <td>D</td>
+        <td>852 | Joris</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+</div> <!-- container -->
+
+</form>
+
+</body>
 </html>
