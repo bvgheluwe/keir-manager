@@ -2,13 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Slick appointment editor</title>
-    <link href="bootstrap-3.3.2.min.css" rel="stylesheet">
-    <script type="text/javascript" src="knockout-3.2.0.js"></script>
+    <title>Freaking awesome appointment editor</title>
+    <link href="css/bootstrap-3.3.2.min.css" rel="stylesheet">
+    <script type="text/javascript" src="js/knockout-3.2.0.js"></script>
+    <script type="text/javascript" src="js/appointment.js"></script>    
     
     <style type="text/css">
       table {margin-top: 10px}
       table.table tr td {border-top: 0px;}
+       .glyphicon-remove {color: red;}
     </style>
 </head>
 <body>
@@ -22,7 +24,7 @@
         <p>Maak een afspraak</p>
       </div>
       <div class="col-md-1">
-        <input type="submit" class="btn btn-danger" value="Bewaren">
+        <input type="submit" class="btn btn-danger" value="Bewaren" data-bind="click: Save">
       </div>
     </div>
   </div>
@@ -34,15 +36,15 @@
 
   <div class="form-group col-md-4 ">
     <label for="plandatum">Datum</label>
-    <input type="text" class="form-control" id="plandatum">
+    <input type="text" class="form-control" id="plandatum" data-bind="value: PlanningDate">
   </div>
   <div class="form-group col-md-4">
     <label for="beginuur">Begint om</label>
-    <input type="text" class="form-control" id="beginuur">
+    <input type="text" class="form-control" id="beginuur" data-bind="value: BeginTime">
   </div>
   <div class="form-group col-md-4">
     <label for="einduur">Eindigt om</label>
-    <input type="text" class="form-control" id="einduur">
+    <input type="text" class="form-control" id="einduur" data-bind="value: EndTime">
   </div>
   
 </div>
@@ -51,7 +53,7 @@
 
   <div class="form-group col-md-12">
     <label for="appLabel">Label</label>
-    <input type="text" class="form-control" id="appLabel">
+    <input type="text" class="form-control" id="appLabel" data-bind="value: Label">
   </div>
 
 </div>
@@ -61,22 +63,40 @@
 <h3>Therapeuten</h3>
 <div class="row">
   <div class="col-md-1">
-    <button class="btn btn-danger">Voeg toe</button>
+    <button class="btn btn-danger" data-bind="click: AddEmployee">Voeg toe</button>
   </div>
   <div class="col-md-3">
-    <select class="form-control">
-      <option value="1">Mireille</option>
+    <select class="form-control" data-bind="options: AvailableEmployees,
+                                            value: SelectedEmployee,
+                                            optionsText: function (item) {
+                                                return item.Number + ' | ' + item.FirstName + ' ' + item.LastName;
+                                            },
+                                            optionsCaption: ''">
+      <!--<option value="1">Mireille</option>
       <option value="2">Gustaaf</option>
-      <option value="3">Hortensia</option>
+      <option value="3">Hortensia</option>-->
     </select>
   </div>
-  <div class="col-md-3">
-    <select class="form-control">
-      <option value="11">A - afwezig</option>
+  <div class="col-md-3" data-bind="if: SelectedEmployee">
+    <select id="employeeBenefitcodes" class="form-control" data-bind="options: SelectedEmployee().Benefitcodes,
+                                            value: SelectedEmployeeBenefitcode,
+                                            optionsText: function (item) {
+                                                return item.Code + ' - ' + item.Description;
+                                            },
+                                            optionsCaption: ''">
+      <!--<option value="11">A - afwezig</option>
       <option value="12">K - koffieklets</option>
-      <option value="13">W - werken</option>
+      <option value="13">W - werken</option>-->
     </select>
   </div>
+
+    <div class="col-md-3" data-bind="if: SelectedEmployee">
+        <p>Gekozen: <span data-bind="text: SelectedEmployee().FirstName"></span>
+            <span data-bind="if: SelectedEmployeeBenefitcode">
+                (<span data-bind="text: SelectedEmployeeBenefitcode().Code"></span>)
+            </span>
+        </p>
+    </div>
 </diV>
 
 <table class="table">
@@ -91,10 +111,11 @@
     </tr>
   </thead>
   
-  <tbody>
+  <tbody data-bind="foreach: Employees">
+
     <tr>
-      <td>D</td>
-      <td>1234 | Eufrasie</td>
+      <td><a href="#" data-bind="click: $parent.removeEmployee"><span class="glyphicon glyphicon-remove"></span></a></td>
+      <td data-bind="text: $data.Number + ' | ' + $data.FirstName + ' ' + $data.LastName"></td>  <!--  -->
       <td>
         <select class="form-control">
           <option value="11">A - afwezig</option>
@@ -125,38 +146,7 @@
       </td>
     </tr>
     
-    <tr>
-      <td>D</td>
-      <td>5678 | Gérard</td>
-      <td>
-        <select class="form-control">
-          <option value="11">A - afwezig</option>
-          <option value="12">K - koffieklets</option>
-          <option value="13">W - werken</option>
-        </select>
-      </td>
-      <td>
-        <select class="form-control">
-          <option value="11">A - afwezig</option>
-          <option value="12">K - koffieklets</option>
-          <option value="13">W - werken</option>
-        </select>
-      </td>
-      <td>
-        <select class="form-control">
-          <option value="11">A - afwezig</option>
-          <option value="12">K - koffieklets</option>
-          <option value="13">W - werken</option>
-        </select>
-      </td>
-      <td>
-        <select class="form-control">
-          <option value="11">A - afwezig</option>
-          <option value="12">K - koffieklets</option>
-          <option value="13">W - werken</option>
-        </select>
-      </td>
-    </tr>
+    
   </tbody>
 
 </table>
@@ -164,35 +154,27 @@
 <h3>Revalidanten</h3>
 <div class="row">
   <div class="col-md-1">
-    <button class="btn btn-danger">Voeg toe</button>
+    <button class="btn btn-danger" data-bind="click: AddPatient">Voeg toe</button>
   </div>
   <div class="col-md-3">
-    <select class="form-control">
-      <option value="1">Adil</option>
-      <option value="2">Wannes</option>
-      <option value="3">Jana</option>
+    <select class="form-control" data-bind="options: AvailablePatients,
+                                            value: SelectedPatient,
+                                            optionsText: function (item) {
+                                                return item.Number + ' | ' + item.FirstName + ' ' + item.LastName;
+                                            },
+                                            optionsCaption: ''">
     </select>
   </div>
 </diV>
 
 <div class="row">
   <div class="col-md-5">
-  <table class="table">
-    <tbody>
-      <tr>
-        <td>D</td>
-        <td>234 | Jan</td>
-      </tr>
-      
-      <tr>
-        <td>D</td>
-        <td>987 | Piet</td>
-      </tr>
-      
-      <tr>
-        <td>D</td>
-        <td>852 | Joris</td>
-      </tr>
+  <table class="table" data-bind="if: Patients">
+    <tbody data-bind="foreach: Patients">
+        <tr>
+            <td><a href="#" data-bind="click: $parent.removePatient"><span class="glyphicon glyphicon-remove"></span></a></td>
+            <td data-bind="text: $data.Number + ' | ' + $data.FirstName + ' ' + $data.LastName"></td>
+        </tr>
     </tbody>
   </table>
   </div>
@@ -201,6 +183,7 @@
 </div> <!-- container -->
 
 </form>
+
 
 </body>
 </html>
