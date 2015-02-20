@@ -11,9 +11,10 @@ function Patient(number, lastName, firstName) {
     this.FirstName = firstName;
 };
 
-function AppointmentPatientInfo(patient, benefitcodes) {
+function AppointmentPatientInfo(patient, benefitcodes, selectedBenefitcode) {
     this.Patient = patient;
     this.Benefitcodes = benefitcodes;
+    this.SelectedBenefitcode = ko.observable(selectedBenefitcode);
 };
 
 function Employee(number, lastName, firstName, benefitcodes) {
@@ -21,7 +22,8 @@ function Employee(number, lastName, firstName, benefitcodes) {
     this.LastName = lastName;
     this.FirstName = firstName;
     this.Benefitcodes = benefitcodes;
-    this.AppointmentPatientInfos = [];
+    this.SelectedBenefitcode = ko.observable();
+    this.AppointmentPatientInfos = ko.observableArray([]);
 };
 
 /* initialisation
@@ -75,10 +77,19 @@ function ViewModel() {
     self.Patients = ko.observableArray();
 
     self.AddEmployee = function () {
-        if (self.SelectedEmployee() && self.SelectedEmployeeBenefitcode()) {
-            self.Employees.push(self.SelectedEmployee());
-            //TODO: add PatientInfo for every patient to this employee
+        var employee = self.SelectedEmployee();
+        if (employee && employee.SelectedBenefitcode()) {
+            self.Employees.push(employee);
 
+            var patients = self.Patients();
+            var count = patients.length;
+            for(var i = 0; i<count; i++){
+                employee.AppointmentPatientInfos.push(
+                  new AppointmentPatientInfo(patients[i],employee.Benefitcodes, employee.SelectedBenefitcode()));
+            }
+            
+            self.SelectedEmployee(null);
+            //employee = null;
         }
     };
 
@@ -87,15 +98,41 @@ function ViewModel() {
     };
 
     self.AddPatient = function () {
-        if (self.SelectedPatient()) {
-            self.Patients.push(self.SelectedPatient());
-            //TODO: add new PatientInfo to every employee
+        var patient = self.SelectedPatient();
+        if (patient) {
+            self.Patients.push(patient);
+            
+            //add new PatientInfo to every employee
+            var employees = self.Employees();
+            var count = employees.length;
+            for (var i = 0; i< count; i++){
+                employee.AppointmentPatientInfos.push(
+                  new AppointmentPatientInfo(patient,employee.Benefitcodes, employee.SelectedBenefitcode()));
+            }
+            //TODO: test
+            
+            self.SelectedPatient(null);
+            //patient = null;
         }
     };
 
     self.removePatient = function () {
         self.Patients.remove(this);
-        //TODO: remove patientInfo from every employee
+        
+        //remove patientInfo from every employee
+        var employees = self.Employees();
+        var count = employees.length;
+        var patient = this;
+        for (var i = 0; i < count; i++){
+            employees[i].AppointmentPatientInfos.remove(function(item){ return item.Patient.Number === patient.Number});
+            /*
+            for (var j = 0; j < employees[i].AppointmentPatientInfos().length; i++){
+                if(employees[i].AppointmentPatientInfos()[j].Patient.Number === patient.Number){
+                    employees[i].AppointmentPatientInfos()
+                }
+            }
+            */
+        }
     };
 
     self.Save = function () {
@@ -123,3 +160,8 @@ window.onload = function () {
     ko.applyBindings(new ViewModel());
 
 };
+
+/* TODO
+ * Remove an employee/patient from the dropdownlist once it has been added to the grid
+ * Fixed width for the grid's columns
+ */

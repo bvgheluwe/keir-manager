@@ -10,7 +10,8 @@
     <style type="text/css">
       table {margin-top: 10px}
       table.table tr td {border-top: 0px;}
-       .glyphicon-remove {color: red;}
+      .glyphicon-remove {color: red;}
+      th.patient-header {width: 225px;} 
     </style>
 </head>
 <body>
@@ -21,7 +22,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-11">
-        <p>Maak een afspraak</p>
+        <p>Freaking awesome appointment editor</p>
       </div>
       <div class="col-md-1">
         <input type="submit" class="btn btn-danger" value="Bewaren" data-bind="click: Save">
@@ -72,28 +73,22 @@
                                                 return item.Number + ' | ' + item.FirstName + ' ' + item.LastName;
                                             },
                                             optionsCaption: ''">
-      <!--<option value="1">Mireille</option>
-      <option value="2">Gustaaf</option>
-      <option value="3">Hortensia</option>-->
     </select>
   </div>
   <div class="col-md-3" data-bind="if: SelectedEmployee">
     <select id="employeeBenefitcodes" class="form-control" data-bind="options: SelectedEmployee().Benefitcodes,
-                                            value: SelectedEmployeeBenefitcode,
+                                            value: SelectedEmployee().SelectedBenefitcode,
                                             optionsText: function (item) {
                                                 return item.Code + ' - ' + item.Description;
                                             },
                                             optionsCaption: ''">
-      <!--<option value="11">A - afwezig</option>
-      <option value="12">K - koffieklets</option>
-      <option value="13">W - werken</option>-->
     </select>
   </div>
 
     <div class="col-md-3" data-bind="if: SelectedEmployee">
         <p>Gekozen: <span data-bind="text: SelectedEmployee().FirstName"></span>
-            <span data-bind="if: SelectedEmployeeBenefitcode">
-                (<span data-bind="text: SelectedEmployeeBenefitcode().Code"></span>)
+            <span data-bind="if: SelectedEmployee().SelectedBenefitcode">
+                (<span data-bind="text: SelectedEmployee().SelectedBenefitcode().Code"></span>)
             </span>
         </p>
     </div>
@@ -105,9 +100,9 @@
       <th>&nbsp;</th>
       <th>&nbsp;</th>
       <th>&nbsp;</th>
-      <th>Jan</th>
-      <th>Piet</th>
-      <th>Joris</th>
+      <!-- ko foreach: Patients -->
+      <th class="patient-header" data-bind="text: $data.Number + ' | ' + $data.FirstName + ' ' + $data.LastName"></th>
+      <!-- /ko -->
     </tr>
   </thead>
   
@@ -115,35 +110,27 @@
 
     <tr>
       <td><a href="#" data-bind="click: $parent.removeEmployee"><span class="glyphicon glyphicon-remove"></span></a></td>
-      <td data-bind="text: $data.Number + ' | ' + $data.FirstName + ' ' + $data.LastName"></td>  <!--  -->
+      <td data-bind="text: $data.Number + ' | ' + $data.FirstName + ' ' + $data.LastName"></td> 
       <td>
-        <select class="form-control">
-          <option value="11">A - afwezig</option>
-          <option value="12">K - koffieklets</option>
-          <option value="13">W - werken</option>
+        <select class="form-control" data-bind="options: $data.Benefitcodes,
+                                                value: $data.SelectedBenefitcode,
+                                                optionsText: function (item) {
+                                                    return item.Code + ' - ' + item.Description;
+                                                },
+                                                optionsCaption: ''">
         </select>
       </td>
+      <!-- ko foreach: $data.AppointmentPatientInfos -->
       <td>
-        <select class="form-control">
-          <option value="11">A - afwezig</option>
-          <option value="12">K - koffieklets</option>
-          <option value="13">W - werken</option>
+        <select class="form-control" data-bind="options: $data.Benefitcodes,
+                                                value: $data.SelectedBenefitcode,
+                                                optionsText: function (item) {
+                                                    return item.Code + ' - ' + item.Description;
+                                                },
+                                                optionsCaption: ''">
         </select>
       </td>
-      <td>
-        <select class="form-control">
-          <option value="11">A - afwezig</option>
-          <option value="12">K - koffieklets</option>
-          <option value="13">W - werken</option>
-        </select>
-      </td>
-      <td>
-        <select class="form-control">
-          <option value="11">A - afwezig</option>
-          <option value="12">K - koffieklets</option>
-          <option value="13">W - werken</option>
-        </select>
-      </td>
+      <!-- /ko -->
     </tr>
     
     
