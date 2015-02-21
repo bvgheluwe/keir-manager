@@ -9,9 +9,13 @@
     
     <style type="text/css">
       table {margin-top: 10px}
+      table#matrix { width:auto; }
       table.table tr td {border-top: 0px;}
       .glyphicon-remove {color: red;}
-      th.patient-header {width: 225px;} 
+      th.patient-header {width: 225px;}
+      th.employee-remove { width: 30px; }
+      th.employee-info { width: 240px; }
+      th.employee-benefitcode { width: 250px; }
     </style>
 </head>
 <body>
@@ -94,12 +98,12 @@
     </div>
 </diV>
 
-<table class="table">
+<table class="table" id="matrix">
   <thead>
     <tr>
-      <th>&nbsp;</th>
-      <th>&nbsp;</th>
-      <th>&nbsp;</th>
+      <th class="employee-remove">&nbsp;</th>
+      <th class="employee-info" >&nbsp;</th>
+      <th class="employee-benefitcode">&nbsp;</th>
       <!-- ko foreach: Patients -->
       <th class="patient-header" data-bind="text: $data.Number + ' | ' + $data.FirstName + ' ' + $data.LastName"></th>
       <!-- /ko -->
